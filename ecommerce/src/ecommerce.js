@@ -3,7 +3,7 @@ import './ecommerce.css';
 import Menu from './components/menu/menu';
 import Produtos from './components/produtos/produtos';
 import Checkout from './components/checkout/checkout';
-import { object } from 'prop-types';
+import Container from 'react-bootstrap/Container'
 
 function MiniEcommerce() {
 
@@ -38,10 +38,12 @@ function MiniEcommerce() {
   return (
     <React.Fragment>
       <Menu />
-      <Produtos
-        visivel={exibirProdutos}
-        adicionarProduto={adicionarProduto} />
-      <Checkout />
+      <Container className="mt-3">
+        <Produtos
+          visivel={exibirProdutos}
+          adicionarProduto={adicionarProduto} />
+        <Checkout />
+      </Container>
     </React.Fragment>
   );
 }
