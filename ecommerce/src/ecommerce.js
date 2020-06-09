@@ -35,9 +35,23 @@ function MiniEcommerce() {
     setCarrinho(objCarrinho);
   }
 
+  function handleExibirProdutos() {
+    setExibirCheckout(false);
+    setExibirProdutos(true)
+  }
+
+  function handleExibirCheckout(total) {
+    setExibirCheckout(true);
+    setExibirProdutos(false);
+    setTotal(total);
+  }
+
   return (
     <React.Fragment>
-      <Menu />
+      <Menu
+        produtos={carrinho.produtos}
+        handleExibirProdutos={handleExibirProdutos}
+        handleExibirCheckout={handleExibirCheckout} />
       <Container className="mt-3">
         <Produtos
           visivel={exibirProdutos}

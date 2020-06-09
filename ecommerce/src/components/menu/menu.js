@@ -4,9 +4,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faShoppingBasket, faCashRegister, faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
 
 
-function Menu() {
+function Menu(props) {
+
+    function calcularTotal() {
+       
+        if (props.produtos.length === 0) {
+            return '0,00'
+        }
+     
+        let total = 0;
+        props.produtos.forEach(produto => {
+            let preco = produto.preco.replace(',', '.').replace('R$ ', '');
+            total += parseFloat(preco) * produto.quantidade;
+        });
+
+        return total.toFixed(2).toString().replace('.', ',')
+    }
+
+
+
     return (
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="#">Mini Ecommerce</Navbar.Brand>
@@ -21,7 +40,8 @@ function Menu() {
                             </div>
                         }
                         drop="left">
-                        <NavDropdown.Item href="#">
+                        <NavDropdown.Item href="#"
+                            onClick={props.handleExibirProdutos}>
                             <FontAwesomeIcon icon={faShoppingBasket} />
                            &nbsp;
                            <strong>Produtos</strong>
@@ -29,13 +49,14 @@ function Menu() {
                         <NavDropdown.Divider />
                         {/* itens do carringo */}
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="#" data-testid="total-carrinho">
-                            Total: R$ {/* Chamar função de calculo de total */}
+                        <NavDropdown.Item href="" data-testid="total-carrinho">
+                            Total: R$ {calcularTotal()}
                         </NavDropdown.Item>
 
-                        <span>
+                        <span className={props.produtos.length === 0 ? 'd-none' : null}>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#" className="text-success bg-white">
+                            <NavDropdown.Item href="" className="text-success bg-white"
+                                onClick={() =>props.handleExibirCheckout(calcularTotal())}>
                                 <FontAwesomeIcon icon={faCashRegister} />
                                 &nbsp;
                                 Finalizar compra
@@ -49,4 +70,9 @@ function Menu() {
     )
 }
 
+Menu.propTypes = {
+    produtos: PropTypes.array.isRequired,
+    handleExibirProdutos: PropTypes.func.isRequired,
+    handleExibirCheckout: PropTypes.func.isRequired
+}
 export default Menu;

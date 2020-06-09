@@ -26,14 +26,14 @@ function Produtos(props) {
 
     return (
         <React.Fragment>
-            <Row className={visivel()}>
+            <Row>
                 <Col>
                     <Alert variant="success" show={exibirMsg}>
                         <b>{produto}</b> adicionado com sucesso ao carrinho!</Alert>
                 </Col>
             </Row>
 
-            <Row>
+            <Row className={visivel()}>
                 <ListarProdutos
                     exibirMensagem={exibirMensagem}
                     adicionarProduto={props.adicionarProduto} />
