@@ -1,12 +1,12 @@
 # Mini Ecommerce em React
 
-Gerenciador de tarefas feito em React, consumindo uma API em Nodejs.
+Mini Ecommerce feito em React, consumindo uma API em Nodejs.
 
 ## API
 
 Dentro do diretório api rode o comando abaixo.
 
-```shell
+```sh
 $ npm install
 $ node index.js
 ```
@@ -15,7 +15,7 @@ $ node index.js
 
 Dentro do diretório react, rode o comando abaixo.
 
-```shell
+```sh
 $ npm install
 $ npm start
 ```
