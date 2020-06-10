@@ -5,16 +5,17 @@ import {
     faShoppingBasket, faCashRegister, faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import ItensCarrinhoMenu from './itens-carrinho-menu';
 
 
 function Menu(props) {
 
     function calcularTotal() {
-       
+
         if (props.produtos.length === 0) {
             return '0,00'
         }
-     
+
         let total = 0;
         props.produtos.forEach(produto => {
             let preco = produto.preco.replace(',', '.').replace('R$ ', '');
@@ -47,7 +48,9 @@ function Menu(props) {
                            <strong>Produtos</strong>
                         </NavDropdown.Item>
                         <NavDropdown.Divider />
-                        {/* itens do carringo */}
+
+                        <ItensCarrinhoMenu produtos={props.produtos} />
+
                         <NavDropdown.Divider />
                         <NavDropdown.Item href="" data-testid="total-carrinho">
                             Total: R$ {calcularTotal()}
@@ -56,7 +59,7 @@ function Menu(props) {
                         <span className={props.produtos.length === 0 ? 'd-none' : null}>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="" className="text-success bg-white"
-                                onClick={() =>props.handleExibirCheckout(calcularTotal())}>
+                                onClick={() => props.handleExibirCheckout(calcularTotal())}>
                                 <FontAwesomeIcon icon={faCashRegister} />
                                 &nbsp;
                                 Finalizar compra
