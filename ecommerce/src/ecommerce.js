@@ -8,8 +8,8 @@ import Container from 'react-bootstrap/Container'
 function MiniEcommerce() {
 
   const [carrinho, setCarrinho] = useState({ produtos: [] });
-  const [exibirProdutos, setExibirProdutos] = useState(true);
-  const [exibirCheckout, setExibirCheckout] = useState(false);
+  const [exibirProdutos, setExibirProdutos] = useState(false);
+  const [exibirCheckout, setExibirCheckout] = useState(true);
   const [total, setTotal] = useState('0.00');
 
   function adicionarProduto(produto) {
