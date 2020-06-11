@@ -7,13 +7,38 @@ import pt from 'date-fns/locale/pt';
 import PropTypes from 'prop-types';
 import ListarEstados from './listar-estados';
 import ListarCidades from './listar-cidades';
+import { Formik } from 'formik';
 
 registerLocale('pt', pt);
 
 function Checkout(props) {
 
+    const [dataNascimento, setDataNascimento] = useState(null);
+    const [formEnviado, setFormEnviado] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showErroModa, setShowErroModal] = useState(false);
+
     function visivel() {
         return props.visivel ? "mt-3 mb-5" : 'd-none';
+    }
+
+    function finalizarCompra(values) {
+
+    }
+
+    function datePickerCss() {
+        if (!formEnviado) {
+            return "form-control"
+        }
+        if (dataNascimento) {
+            return "form-control is-valid"
+        } else {
+            return "form-control is-invalid"
+        }
+    }
+
+    function handleDataNascimento(data) {
+        setDataNascimento(data);
     }
 
     return (
@@ -23,152 +48,211 @@ function Checkout(props) {
                     <h4 className="mb-0">Finalizar compra</h4>
                 </Card.Header>
                 <Card.Body>
-                    <Form noValidate>
-                        <Form.Group controlId="email">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="Digite seu email"
-                                name="email"
-                                data-testid="txt-email" />
-                            <Form.Control.Feedback type="invalid">
-                                Digite um email válido.
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                    <Formik
+                        onSubmit={(values) => finalizarCompra(values)}
+                        initialValues={{
+                            email: '',
+                            nomeCompleto: '',
+                            cpf: '',
+                            endereco: '',
+                            cidade: '',
+                            estado: '',
+                            cep: '',
+                            termosCondicoes: false,
+                            emailPromocional: 'S'
+                        }}>
+                        {({
+                            handleSubmit,
+                            handleChange,
+                            values,
+                            touched,
+                            errors
+                        }) => (
+                                <Form noValidate onSubmit={handleSubmit}>
+                                    <Form.Group controlId="email">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Digite seu email"
+                                            name="email"
+                                            value={values.email}
+                                            onChange={handleChange}
+                                            isValid={touched.email && !errors.email}
+                                            isInvalid={touched.email && !!errors.email}
+                                            data-testid="txt-email" />
+                                        <Form.Control.Feedback type="invalid">
+                                            Digite um email válido.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="nomeCompleto">
-                            <Form.Label>Nome completo</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Digite seu nome completo"
-                                name="nomeCompleto"
-                                data-testid="txt-nome-completo" />
-                            <Form.Control.Feedback type="invalid">
-                                Digite seu nome completo (mínimo 5 caracteres)
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="nomeCompleto">
+                                        <Form.Label>Nome completo</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Digite seu nome completo"
+                                            name="nomeCompleto"
+                                            value={values.nomeCompleto}
+                                            onChange={handleChange}
+                                            isValid={touched.nomeCompleto && !errors.nomeCompleto}
+                                            isInvalid={touched.nomeCompleto && !!errors.nomeCompleto}
+                                            data-testid="txt-nome-completo" />
+                                        <Form.Control.Feedback type="invalid">
+                                            Digite seu nome completo (mínimo 5 caracteres)
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="dataNascimento">
-                            <Form.Label>Data de nascimento</Form.Label>
-                            <DatePicker
-                                locale="pt"
-                                showMonthDropdown
-                                showYearDropdown
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                                placeholderText="selecione a data"
-                                className="form-control"
-                                name="dataNascimento"
-                                withPortal
-                            />
-                        </Form.Group>
+                                    <Form.Group controlId="dataNascimento">
+                                        <Form.Label>Data de nascimento</Form.Label>
+                                        <DatePicker
+                                            locale="pt"
+                                            showMonthDropdown
+                                            showYearDropdown
+                                            dropdownMode="select"
+                                            dateFormat="dd/MM/yyyy"
+                                            placeholderText="selecione a data"
+                                            name="dataNascimento"
+                                            withPortal
+                                            selected={dataNascimento}
+                                            onChange={handleDataNascimento}
+                                            className={datePickerCss()}
+                                        />
+                                    </Form.Group>
 
-                        <Form.Group controlId="cpf">
-                            <Form.Label>CPF</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Digite seu CPF"
-                                name="cpf"
-                                data-testid="txt-cpf" />
-                            <Form.Control.Feedback type="invalid">
-                                Digite um cpf válido
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="cpf">
+                                        <Form.Label>CPF</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Digite seu CPF"
+                                            name="cpf"
+                                            value={values.cpf}
+                                            onChange={handleChange}
+                                            isValid={touched.cpf && !errors.cpf}
+                                            isInvalid={touched.cpf && !!errors.cpf}
+                                            data-testid="txt-cpf" />
+                                        <Form.Control.Feedback type="invalid">
+                                            Digite um cpf válido
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="endereco">
-                            <Form.Label>Endereço</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Digite seu endereço"
-                                name="endereco"
-                                data-testid="txt-endereco" />
-                            <Form.Control.Feedback type="invalid">
-                                Digite seu endereço
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="endereco">
+                                        <Form.Label>Endereço</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Digite seu endereço"
+                                            name="endereco"
+                                            value={values.endereco}
+                                            onChange={handleChange}
+                                            isValid={touched.endereco && !errors.endereco}
+                                            isInvalid={touched.endereco && !!errors.endereco}
+                                            data-testid="txt-endereco" />
+                                        <Form.Control.Feedback type="invalid">
+                                            Digite seu endereço
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="estado">
-                            <Form.Label>Estado</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="estado"
-                                data-testid="estado"
-                            >
-                                <ListarEstados />
-                            </Form.Control>
-                            <Form.Control.Feedback type="invalid">
-                                Selecione seu Estado
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="estado">
+                                        <Form.Label>Estado</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="estado"
+                                            value={values.estado}
+                                            onChange={handleChange}
+                                            isValid={touched.estado && !errors.estado}
+                                            isInvalid={touched.estado && !!errors.estado}
+                                            data-testid="estado"
+                                        >
+                                            <ListarEstados />
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">
+                                            Selecione seu Estado
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="cidade">
-                            <Form.Label>Cidade</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="cidade"
-                                data-testid="cidade"
-                            >
-                                <option value="">Selecione a Cidade</option>
-                                <ListarCidades estado={''} />
-                            </Form.Control>
-                            <Form.Control.Feedback type="invalid">
-                                Selecione sua Cidade
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="cidade">
+                                        <Form.Label>Cidade</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="cidade"
+                                            value={values.cidade}
+                                            onChange={handleChange}
+                                            isValid={touched.cidade && !errors.cidade}
+                                            isInvalid={touched.cidade && !!errors.cidade}
+                                            data-testid="cidade">
+                                            <option value="">Selecione a cidade</option>
+                                            <ListarCidades estado={values.estado} />
+                                        </Form.Control>
+                                        <Form.Control.Feedback type="invalid">
+                                            Selecione sua Cidade
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="cep">
-                            <Form.Label>CEP</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Digite seu CEP"
-                                name="cep"
-                                data-testid="txt-cep" />
-                            <Form.Control.Feedback type="invalid">
-                                Digite seu CEP
-                        </Form.Control.Feedback>
-                        </Form.Group>
+                                    <Form.Group controlId="cep">
+                                        <Form.Label>CEP</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Digite seu CEP"
+                                            name="cep"
+                                            value={values.cep}
+                                            onChange={handleChange}
+                                            isValid={touched.cep && !errors.cep}
+                                            isInvalid={touched.cep && !!errors.cep}
+                                            data-testid="txt-cep" />
+                                        <Form.Control.Feedback type="invalid">
+                                            Digite seu CEP
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId="emailPromocional">
-                            <Form.Label className="w-100">Deseja receber email com promoções?</Form.Label>
-                            <Form.Check
-                                inline
-                                name="emailPromocional"
-                                type="radio"
-                                id="promocaoSim"
-                                value="S"
-                                label="Sim"
-                            />
-                            <Form.Check
-                                inline
-                                name="emailPromocional"
-                                type="radio"
-                                id="promocaoNao"
-                                value="N"
-                                label="Não"
-                            />
-                        </Form.Group>
+                                    <Form.Group controlId="emailPromocional">
+                                        <Form.Label className="w-100">Deseja receber email com promoções?</Form.Label>
+                                        <Form.Check
+                                            inline
+                                            name="emailPromocional"
+                                            type="radio"
+                                            id="promocaoSim"
+                                            value="S"
+                                            checked={values.emailPromocional === 'S'}
+                                            onChange={handleChange}
+                                            label="Sim"
+                                        />
+                                        <Form.Check
+                                            inline
+                                            name="emailPromocional"
+                                            type="radio"
+                                            id="promocaoNao"
+                                            value="N"
+                                            checked={values.emailPromocional === 'N'}
+                                            onChange={handleChange}
+                                            label="Não"
+                                        />
+                                    </Form.Group>
 
-                        <Form.Group controlId="termosCondicoes">
-                            <Form.Check
-                                name="termosCondicoes"
-                                type="checkbox"
-                                label="Concordo com os termos e condições"
-                            />
-                        </Form.Group>
+                                    <Form.Group controlId="termosCondicoes">
+                                        <Form.Check
+                                            name="termosCondicoes"
+                                            label="Concordo com os termos e condições"
+                                            data-testid="check-termos-condicoes"
+                                            value={values.termosCondicoes}
+                                            onChange={handleChange}
+                                            isValid={touched.termosCondicoes && !errors.termosCondicoes}
+                                            isInvalid={touched.termosCondicoes && !!errors.termosCondicoes}
 
-                        <Row>
-                            <Col className="justify-content-center d-flex">
-                                <Button
-                                    variant="success"
-                                    className="mt-3 mb-3"
-                                    data-testid="btn-finalizar-compra"
-                                    type="submit">
-                                    Finalizar compra
-                            </Button>
-                            </Col>
-                        </Row>
+                                        />
+                                    </Form.Group>
 
-                    </Form>
+                                    <Row>
+                                        <Col className="justify-content-center d-flex">
+                                            <Button
+                                                variant="success"
+                                                className="mt-3 mb-3"
+                                                data-testid="btn-finalizar-compra"
+                                                type="submit">
+                                                Finalizar compra
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            )}
+                    </Formik>
                 </Card.Body>
             </Card>
 
