@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import ListarEstados from './listar-estados';
 import ListarCidades from './listar-cidades';
 import { Formik } from 'formik';
+import * as yup from 'yup';
 
 registerLocale('pt', pt);
 
@@ -17,6 +18,18 @@ function Checkout(props) {
     const [formEnviado, setFormEnviado] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showErroModa, setShowErroModal] = useState(false);
+
+    const schema = yup.object({
+        email: yup.string().email().required(),
+        nomeCompleto: yup.string().required().min(5),
+        cpf: yup.string().required().min(14).max(14),
+        endereco: yup.string().min(5).required(),
+        estado: yup.string().required(),
+        cidade: yup.string().required(),
+        cep: yup.string().required().min(9).max(9),
+        emailPromocional: yup.string().required(),
+        termosCondicoes: yup.bool().oneOf([true])
+    });
 
     function visivel() {
         return props.visivel ? "mt-3 mb-5" : 'd-none';
@@ -60,7 +73,8 @@ function Checkout(props) {
                             cep: '',
                             termosCondicoes: false,
                             emailPromocional: 'S'
-                        }}>
+                        }}
+                        validationSchema={schema}>
                         {({
                             handleSubmit,
                             handleChange,
