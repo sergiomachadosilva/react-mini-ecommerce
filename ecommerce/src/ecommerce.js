@@ -8,8 +8,8 @@ import Container from 'react-bootstrap/Container'
 function MiniEcommerce() {
 
   const [carrinho, setCarrinho] = useState({ produtos: [] });
-  const [exibirProdutos, setExibirProdutos] = useState(false);
-  const [exibirCheckout, setExibirCheckout] = useState(true);
+  const [exibirProdutos, setExibirProdutos] = useState(true);
+  const [exibirCheckout, setExibirCheckout] = useState(false);
   const [total, setTotal] = useState('0.00');
 
   function adicionarProduto(produto) {
@@ -46,6 +46,10 @@ function MiniEcommerce() {
     setTotal(total);
   }
 
+  function handleLimparCarrinho() {
+    setCarrinho({ produtos: [] })
+  }
+
   return (
     <React.Fragment>
       <Menu
@@ -56,7 +60,14 @@ function MiniEcommerce() {
         <Produtos
           visivel={exibirProdutos}
           adicionarProduto={adicionarProduto} />
-        <Checkout />
+
+        <Checkout
+          visivel={exibirCheckout}
+          handleExibirProdutos={handleExibirProdutos}
+          total={total}
+          produtos={carrinho}
+          handleLimparCarrinho={handleLimparCarrinho} />
+
       </Container>
     </React.Fragment>
   );

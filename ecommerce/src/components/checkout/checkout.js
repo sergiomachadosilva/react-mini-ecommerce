@@ -12,9 +12,13 @@ registerLocale('pt', pt);
 
 function Checkout(props) {
 
+    function visivel() {
+        return props.visivel ? "mt-3 mb-5" : 'd-none';
+    }
+
     return (
         <React.Fragment>
-            <Card bg="light" className="mt-3 mb-5">
+            <Card bg="light" className={visivel()}>
                 <Card.Header>
                     <h4 className="mb-0">Finalizar compra</h4>
                 </Card.Header>
@@ -199,6 +203,14 @@ function Checkout(props) {
             </Modal>
         </React.Fragment>
     )
+}
+
+Checkout.propTypes = {
+    visivel: PropTypes.bool.isRequired,
+    handleExibirProdutos: PropTypes.func.isRequired,
+    total: PropTypes.string.isRequired,
+    produtos: PropTypes.object.isRequired,
+    handleLimparCarrinho: PropTypes.func.isRequired
 }
 
 export default Checkout;
