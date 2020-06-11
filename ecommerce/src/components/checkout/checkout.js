@@ -5,7 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import pt from 'date-fns/locale/pt';
 import PropTypes from 'prop-types';
-import ListarEstados from './listar-estados'
+import ListarEstados from './listar-estados';
+import ListarCidades from './listar-cidades';
 
 registerLocale('pt', pt);
 
@@ -104,11 +105,7 @@ function Checkout(props) {
                                 data-testid="cidade"
                             >
                                 <option value="">Selecione a Cidade</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <ListarCidades estado={''} />
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">
                                 Selecione sua Cidade
