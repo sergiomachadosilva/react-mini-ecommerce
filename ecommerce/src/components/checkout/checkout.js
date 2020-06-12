@@ -11,15 +11,18 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { validarCpf, formatarCpf } from '../../utils/cpf-util';
 import formatarCep from '../../utils/cep-util';
+import axios from 'axios';
 
 registerLocale('pt', pt);
 
 function Checkout(props) {
 
+    const CHECKOUT_URL = 'http://localhost:3001/checkout';
+
     const [dataNascimento, setDataNascimento] = useState(null);
     const [formEnviado, setFormEnviado] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [showErroModa, setShowErroModal] = useState(false);
+    const [showErroModal, setShowErroModal] = useState(false);
 
     const schema = yup.object({
         email: yup.string().email().required(),
@@ -38,7 +41,24 @@ function Checkout(props) {
         return props.visivel ? "mt-3 mb-5" : 'd-none';
     }
 
-    function finalizarCompra(values) {
+    async function finalizarCompra(dados) {
+        if (!dataNascimento) {
+            setFormEnviado(true);
+            return;
+        }
+
+        dados.dataNascimento = dataNascimento;
+        dados.produtos = JSON.stringify(props.produtos);
+        dados.total = `R$ ${props.total}`;
+
+        try {
+            await axios.post(CHECKOUT_URL, dados);
+            setShowModal(true);
+            props.handleLimparCarrinho();
+
+        } catch (err) {
+            setShowErroModal(true);
+        }
 
     }
 
@@ -55,6 +75,15 @@ function Checkout(props) {
 
     function handleDataNascimento(data) {
         setDataNascimento(data);
+    }
+
+    function handleContinuar() {
+        setShowModal(false);
+        props.handleExibirProdutos();
+    }
+
+    function handleFecharErroModal() {
+        setShowErroModal(false)
     }
 
     return (
@@ -279,7 +308,9 @@ function Checkout(props) {
                 </Card.Body>
             </Card>
 
-            <Modal show={false} centered data-testid="modal-compra-sucesso">
+            <Modal show={showModal} centered
+                data-testid="modal-compra-sucesso"
+                onHide={handleContinuar}>
                 <Modal.Header closeButton>
                     <Modal.Title>Compra realizada com sucesso!</Modal.Title>
                 </Modal.Header>
@@ -288,13 +319,15 @@ function Checkout(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        variant="success">
+                        variant="success" onClick={handleContinuar}>
                         Continuar
                     </Button>
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={false} centered data-testid="modal-erro-comprar">
+            <Modal show={showErroModal} centered
+                onHide={handleFecharErroModal}
+                data-testid="modal-erro-comprar">
                 <Modal.Header closeButton>
                     <Modal.Title>Erro ao processar o pedido.</Modal.Title>
                 </Modal.Header>
@@ -303,7 +336,7 @@ function Checkout(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
-                        variant="warning">
+                        variant="warning" onClick={handleFecharErroModal}>
                         Continuar
                     </Button>
                 </Modal.Footer>
