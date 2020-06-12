@@ -155,7 +155,7 @@ function Checkout(props) {
                                             showYearDropdown
                                             dropdownMode="select"
                                             dateFormat="dd/MM/yyyy"
-                                            placeholderText="selecione a data"
+                                            placeholderText="Selecione a data"
                                             name="dataNascimento"
                                             withPortal
                                             selected={dataNascimento}
