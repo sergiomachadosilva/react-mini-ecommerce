@@ -9,6 +9,7 @@ import ListarEstados from './listar-estados';
 import ListarCidades from './listar-cidades';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { validarCpf, formatarCpf } from '../../utils/cpf-util';
 
 registerLocale('pt', pt);
 
@@ -22,7 +23,8 @@ function Checkout(props) {
     const schema = yup.object({
         email: yup.string().email().required(),
         nomeCompleto: yup.string().required().min(5),
-        cpf: yup.string().required().min(14).max(14),
+        cpf: yup.string().required().min(14).max(14)
+            .test('cpf-valido', 'CPF inválido', (cpf) => validarCpf(cpf)),
         endereco: yup.string().min(5).required(),
         estado: yup.string().required(),
         cidade: yup.string().required(),
@@ -139,7 +141,10 @@ function Checkout(props) {
                                             placeholder="Digite seu CPF"
                                             name="cpf"
                                             value={values.cpf}
-                                            onChange={handleChange}
+                                            onChange={e => {
+                                                e.currentTarget.value = formatarCpf(e.currentTarget.value);
+                                                handleChange(e);
+                                            }}
                                             isValid={touched.cpf && !errors.cpf}
                                             isInvalid={touched.cpf && !!errors.cpf}
                                             data-testid="txt-cpf" />
