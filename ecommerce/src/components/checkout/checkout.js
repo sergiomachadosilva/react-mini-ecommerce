@@ -114,8 +114,8 @@ function Checkout(props) {
                             touched,
                             errors
                         }) => (
-                                <Form noValidate onSubmit={handleSubmit}>
-                                    <Form.Group controlId="email">
+                                <Form noValidate onSubmit={handleSubmit} className="row">
+                                    <Form.Group controlId="email" className="col-md-6">
                                         <Form.Label>Email</Form.Label>
                                         <Form.Control
                                             type="email"
@@ -131,7 +131,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="nomeCompleto">
+                                    <Form.Group controlId="nomeCompleto" className="col-md-6">
                                         <Form.Label>Nome completo</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -147,7 +147,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="dataNascimento">
+                                    <Form.Group controlId="dataNascimento" className="col-md-6">
                                         <Form.Label>Data de nascimento</Form.Label>
                                         <DatePicker
                                             locale="pt"
@@ -164,7 +164,7 @@ function Checkout(props) {
                                         />
                                     </Form.Group>
 
-                                    <Form.Group controlId="cpf">
+                                    <Form.Group controlId="cpf" className="col-md-6">
                                         <Form.Label>CPF</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -183,7 +183,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="endereco">
+                                    <Form.Group controlId="endereco" className="col-md-6">
                                         <Form.Label>Endereço</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -199,7 +199,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="estado">
+                                    <Form.Group controlId="estado" className="col-md-6">
                                         <Form.Label>Estado</Form.Label>
                                         <Form.Control
                                             as="select"
@@ -217,7 +217,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="cidade">
+                                    <Form.Group controlId="cidade" className="col-md-6">
                                         <Form.Label>Cidade</Form.Label>
                                         <Form.Control
                                             as="select"
@@ -235,7 +235,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="cep">
+                                    <Form.Group controlId="cep" className="col-md-6">
                                         <Form.Label>CEP</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -254,7 +254,7 @@ function Checkout(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group controlId="emailPromocional">
+                                    <Form.Group controlId="emailPromocional" className="col-md-12">
                                         <Form.Label className="w-100">Deseja receber email com promoções?</Form.Label>
                                         <Form.Check
                                             inline
@@ -278,7 +278,7 @@ function Checkout(props) {
                                         />
                                     </Form.Group>
 
-                                    <Form.Group controlId="termosCondicoes">
+                                    <Form.Group controlId="termosCondicoes" className="col-md-12">
                                         <Form.Check
                                             name="termosCondicoes"
                                             label="Concordo com os termos e condições"
@@ -291,7 +291,7 @@ function Checkout(props) {
                                         />
                                     </Form.Group>
 
-                                    <Row>
+                                    <div className="col-md-12">
                                         <Col className="justify-content-center d-flex">
                                             <Button
                                                 variant="success"
@@ -301,7 +301,7 @@ function Checkout(props) {
                                                 Finalizar compra
                                             </Button>
                                         </Col>
-                                    </Row>
+                                    </div>
                                 </Form>
                             )}
                     </Formik>
